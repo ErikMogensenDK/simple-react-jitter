@@ -3,11 +3,6 @@ import { useQuery, } from '@tanstack/react-query'
 import './App.css'
 import { apiService, } from './jitter-client/api-client'
 
-type TestPayload = {
-  ok?: boolean
-  message?: string
-}
-
 function App() {
   const [failureMode] = useState(false)
   const queryKey = ['demo-data', failureMode]
@@ -15,7 +10,7 @@ function App() {
   const { data, isLoading, isError, isFetching } = useQuery({
     queryKey,
     queryFn: () =>
-        apiService.getDataAndFail<TestPayload>()
+        apiService.getDataAndFail()
   })
 
   return (

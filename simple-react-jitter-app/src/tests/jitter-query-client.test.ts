@@ -3,7 +3,6 @@ import { QueryClient } from "@tanstack/react-query";
 import MockAdapter from "axios-mock-adapter";
 import { apiClient, apiService } from "../jitter-client/api-client";
 
-// unit-test added to ensure queryClient uses the backoff values as expected
 describe("integration: exponential backoff", () => {
   let mock: MockAdapter;
 
@@ -20,7 +19,7 @@ describe("integration: exponential backoff", () => {
   it("waits between retries with exponential delays", async () => {
     let callCount = 0;
 
-    mock.onGet("/testPath").reply(() => {
+    mock.onGet("/testPath/fail").reply(() => {
       callCount += 1;
       if (callCount < 4) return [500, { error: "fail" }]; // fail 3 times
       return [200, { ok: true }]; // succeed on 4th call
@@ -42,7 +41,7 @@ describe("integration: exponential backoff", () => {
 
     const promise = qc.fetchQuery({
       queryKey: ["data"],
-      queryFn: () => apiService.getDataAndFail<{ ok: boolean }>(),
+      queryFn: () => apiService.getDataAndFail(),
     });
 
     // Let the initial request cycle start before timing assertions.

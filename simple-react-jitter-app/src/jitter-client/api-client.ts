@@ -10,13 +10,11 @@ export const apiClient = axios.create({
 apiClient.interceptors.request.use(applyRetryCount);
 apiClient.interceptors.request.use(applyIdempotencyKeyHeader);
 
+// deliberately failing endpoint
 const FAIL_PATH = '/testPath/fail'
 
-/**
- * Calls a deliberately-failing endpoint.
- */
-export async function getDataAndFail<T = unknown>() {
-    const response = await apiClient.get<T>(FAIL_PATH)
+export async function getDataAndFail() {
+    const response = await apiClient.get(FAIL_PATH)
     return response.data
 }
 
