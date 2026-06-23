@@ -3,6 +3,7 @@ import { QueryClient } from "@tanstack/react-query";
 import MockAdapter from "axios-mock-adapter";
 import { apiClient, apiService } from "../jitter-client/api-client";
 
+// unit-test added to ensure queryClient uses the backoff values as expected
 describe("integration: exponential backoff", () => {
   let mock: MockAdapter;
 
