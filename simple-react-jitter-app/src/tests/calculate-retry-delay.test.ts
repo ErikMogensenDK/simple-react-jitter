@@ -13,16 +13,23 @@ describe('calculateRetryDelay', () => {
     })
 
     it.each([
-        { failureCount: 1, maxExpectedDelay: 2000 },
-        { failureCount: 3, maxExpectedDelay: 8000 },
-        { failureCount: 500, maxExpectedDelay: 30000 },
+        { failureCount: 1, maxExpectedDelay: 2001 },
+        { failureCount: 3, maxExpectedDelay: 8001 },
+        { failureCount: 500, maxExpectedDelay: 30001 },
     ])(
         'returns jittered delay within 0..$maxExpectedDelay for failureCount=$failureCount',
         ({ failureCount, maxExpectedDelay }) => {
-            const delay = calculateRetryDelay(failureCount, defaultRetryOptions)
+            vi.spyOn(Math, 'random').mockReturnValue(1)
+            const maxDelay = calculateRetryDelay(failureCount, defaultRetryOptions)
+            expect(maxDelay).toBe(maxExpectedDelay)
 
-            expect(delay).toBeGreaterThanOrEqual(0)
-            expect(delay).toBeLessThanOrEqual(maxExpectedDelay)
+            vi.spyOn(Math, 'random').mockReturnValue(0)
+            const minDelay = calculateRetryDelay(failureCount, defaultRetryOptions)
+            expect(minDelay).toBe(0)
+
+            vi.spyOn(Math, 'random').mockReturnValue(0.5)
+            const midDelay = calculateRetryDelay(failureCount, defaultRetryOptions)
+            expect(midDelay).toBe(Math.floor(maxExpectedDelay/2))
         }
     )
 
