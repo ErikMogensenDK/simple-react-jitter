@@ -10,15 +10,12 @@ type TestPayload = {
 
 function App() {
   const [failureMode] = useState(false)
-  // const queryClient = useQueryClient()
   const queryKey = ['demo-data', failureMode]
 
   const { data, isLoading, isError, isFetching } = useQuery({
     queryKey,
     queryFn: () =>
-      failureMode
-        ? apiService.getDataAndFail<TestPayload>()
-        : apiService.getData<TestPayload>(),
+        apiService.getDataAndFail<TestPayload>()
   })
 
   return (
