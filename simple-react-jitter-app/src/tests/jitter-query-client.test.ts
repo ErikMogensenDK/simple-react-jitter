@@ -42,7 +42,7 @@ describe("integration: exponential backoff", () => {
 
     const promise = qc.fetchQuery({
       queryKey: ["data"],
-      queryFn: () => apiService.getData<{ ok: boolean }>(),
+      queryFn: () => apiService.getDataAndFail<{ ok: boolean }>(),
     });
 
     // Let the initial request cycle start before timing assertions.
