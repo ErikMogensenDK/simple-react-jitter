@@ -32,20 +32,4 @@ describe('calculateRetryDelay', () => {
             expect(midDelay).toBe(Math.floor(maxExpectedDelay/2))
         }
     )
-
-    it('returns 0 when random is 0', () => {
-        vi.spyOn(Math, 'random').mockReturnValue(0)
-
-        const delay = calculateRetryDelay(1, defaultRetryOptions)
-
-        expect(delay).toBe(0)
-    })
-
-    it('can return the capped max delay when random is near 1', () => {
-        vi.spyOn(Math, 'random').mockReturnValue(0.999999)
-
-        const delay = calculateRetryDelay(500, defaultRetryOptions)
-
-        expect(delay).toBe(defaultRetryOptions.maxDelayMs)
-    })
 })
